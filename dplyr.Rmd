@@ -1,0 +1,271 @@
+---
+title: "Dplyr"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+#install.packages("dplyr")
+#install.packages("backports")
+#install.packages("tibble")
+#install.packages("nycflights13")
+#install.packages("zeallot")
+#install.packages("skimr")
+#install.packages("gapminder")
+#install.packages("ggplot")
+#install.packages("tibble")
+library(tibble)
+library(dplyr)
+library(skimr)
+library(ggplot2)
+```
+
+# Dplyr
+
+## Cargando la Data
+
+```{r}
+flights <- nycflights13::flights
+```
+
+Como ver la data carga
+
+```{r}
+flights
+```
+
+Que datos tenemos en este dataframe desde la ayuda
+
+```{r}
+?nycflights13::flights
+```
+
+## Describiendo la Data
+
+### Utilizar glimpse para saber los formatos de la data
+
+```{r}
+
+```
+
+
+## Filter
+
+### Filtrado Básico
+
+Seleccionar casos (filas) dependiendo de sus valores. 
+
+Encontrar los vuelos que ocurrieron el primero de Enero (month==1 y day==1)
+
+```{r}
+
+```
+
+### Filtrar columna según una lista de valores con el operador "%in%". 
+
+Encontrar los vuelos en los meses de Noviembre y Diciembre.
+
+```{r}
+
+```
+
+
+## Arrange
+
+### Ordenamiento Básico
+
+Ordenamiento de los casos (filas).
+
+Ordenar los vuelos por año, mes y dia 
+
+```{r}
+
+```
+
+### Ordenamiento Descendiente
+
+Ordenar los vuelos por el retraso a la llegada (arr_delay) de forma descendiente con desc()
+
+```{r}
+
+```
+
+## Select y Rename
+
+### Selección básica
+
+Seleccionar variables basado en sus nombres.
+
+Seleccionar las columnas año (year), mes (month) y día (day) del dataframe
+
+```{r}
+
+```
+
+### Selección con operador ":"
+
+Seleccionar las columnas desde año (year) hasta día (day) con el operador ":"
+
+```{r}
+
+```
+
+
+### Selección con operador "-"
+
+Seleccionar todas las columnas menos las columnas desde año (año) year hasta (día) con el operador "-"
+
+```{r}
+
+```
+
+### Selección con operador "starts_with()"
+
+Seleccionar las columnas que empiezan por "dep" o "arr"
+
+```{r}
+start
+```
+
+### Selección con operador "ends_with()"
+
+Seleccionar las columnas que terminan por delay
+
+```{r}
+
+```
+
+
+### Renombrando Columnas
+
+Renombrar la columna "tailnum" con el nombre "tail_num" con "rename"
+
+```{r}
+
+```
+
+## Mutate
+
+### Creando una nueva columna
+
+Adicionar nuevas variables que son funciones de variables existentes.
+
+Calcular la variable "speed" como distance / (air_time / 60) para obtener una medida de millas/hora
+
+```{r}
+
+```
+
+### Combinando mutate con group by
+
+Calculemos el promedio del retraso a la salida (dep_delay) por mes del año (month) para cada aeropuerto de origen (origin) en el conjunto de datos.
+Luego calcular que proporción de retraso corresponde a cada mes.
+
+```{r}
+
+```
+
+
+### Creando una nueva columna con transmute
+
+Usar "transmute" para solo dejar las variables calculada
+
+```{r}
+
+```
+
+## Summarise o Summarize
+
+### Resumen Básico
+
+Resumir multiples valores a un único valor. 
+
+Calcular el retraso promedio de salida (dep_delay) para todos los vuelos (aplicar na.rm = TRUE a mean)
+
+```{r}
+
+```
+
+### Resumen con group_by
+
+Bastante útil en conjunto con group_by().
+
+Calcular el restrado de salida (dep_delay) agrupado por aeropuerto de salida (origin)
+
+```{r}
+
+```
+
+## Otras operaciones
+
+Calcular el numero (count), promedio de distancia (dist) y promedio en el retraso a la llegada (delay) para cada uno de los aviones en el conjunto de datos (cada avión es identificado por su id tailnum) y llamar al dataframe (delay)
+
+```{r}
+
+```
+
+Gráficar en ggplot la realción entre el retraso promedio (delay) y la distancia promedio de los vuelos con una linea de tendencia local (LOESS)
+
+```{r}
+
+```
+
+## Valores faltantes
+
+### Describiendo la data con skimr
+
+```{r}
+
+```
+
+
+
+# Ejercicios
+
+## 1.
+
+Qué vuelo tiene el peor atraso a la salida? (Vuelo 51 el 9 de Enero del 2013)
+
+```{r}
+
+```
+
+## 2.
+
+Qué avión (tailnum) tiene mayor promedio de retrado a la llegada? (N844MH 320)
+
+```{r}
+
+```
+
+## 4
+
+Encontrar el vuelo que tuvo mayor velocidad promedio en Mph (Millas por hora)?
+
+```{r}
+
+```
+
+
+## 5
+
+Definamos los vuelos no cancelados como aquellos donde dep_delay y arr_delay no son nulos
+
+```{r}
+not_cancelled <- flights %>% 
+  filter(!is.na(dep_delay), !is.na(arr_delay))
+```
+
+Que vuelos no cancelados ( un vuelo es identificado por la columna flight) está siempre retrasado 10 a la llegada? Cuántos vuelos totales tiene ese vuelo en el conjunto de datos.
+
+```{r}
+
+```
+
+ Cuál es el vuelo con mayor número de registros del ejemplo anterior?
+ 
+```{r}
+
+```
+
+
